@@ -182,6 +182,8 @@ def construct(z_in_1, z_in_2, z_out):
 def write_gml_wrapper(G, filename, ignore_attr=False):
     if(ignore_attr):
         _G = nx.Graph()
+        for node in G.nodes():
+            _G.add_node(node)
         for edge in G.edges():
             i,j = edge
             _G.add_edge(i,j)
@@ -272,7 +274,7 @@ if __name__ == '__main__':
     if(args.plot_graph):
         graph_plot(G)
     if(args.save_graph):
-        write_gml_wrapper(G, 'build/tuning.gml', True)
+        write_gml_wrapper(G, 'build/tuning.gml', args.save_graph-1)
     methods = []
     if(args.alg.count('all')>0):
         args.alg = method_chocies
