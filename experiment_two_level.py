@@ -198,7 +198,7 @@ def graph_plot(G):
     '''
     global n, k1, k2
     time_str = datetime.now().strftime('%Y-%m-%d')
-    nx.write_gml_wrapper(G, os.path.join('build', 'two_level-%s.gml'%time_str))
+    write_gml_wrapper(G, os.path.join('build', 'two_level-%s.gml'%time_str))
     g = graphviz.Graph(filename='two_level-%s.gv'%time_str, engine='neato') # g is used for plotting
     for i in G.nodes(data=True):
         macro_index = i[1]['macro']
