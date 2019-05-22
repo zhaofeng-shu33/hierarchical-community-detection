@@ -45,26 +45,32 @@ def plot_ari(filename, plot_title=''):
         raise ValueError('finename must contain info-clustering or gn')
     x_data = [i[x_title] for i in data]
     distance_data = [i['norm_rf'] for i in data]
-    plt.plot(x_data, distance_data, label=alg)
+    plt.plot(x_data, distance_data, label=alg, linewidth=3, color='red', marker='o', markersize=12)
     data_2 = load_other_data(filename, alg, other_alg)    
     if(data_2):
-        plt.plot(x_data, data_2, label=other_alg)
+        plt.plot(x_data, data_2, label=other_alg, linewidth=3, color='green', marker='+', markersize=12)
     data_3 = load_other_data(filename, alg, other_alg_2)    
     if(data_3):
-        plt.plot(x_data, data_3, label=other_alg_2)
-        
-    plt.xlabel(x_title)
-    plt.ylabel('norm rf')
+        plt.plot(x_data, data_3, label=other_alg_2, linewidth=3, color='blue', marker='x', markersize=12)
+    plt.ylabel('distance', fontsize=18)
     if(x_title == 'z_o'):
-        title_str = 'z_in_1 = %.2f, z_in_2 = %.2f' % (data[0]['z_in_1'], data[0]['z_in_2'])
+        title_str = '$z_{in_1}$ = %.1f, $z_{in_2}$ = %.1f' % (data[0]['z_in_1'], data[0]['z_in_2'])
     elif(x_title == 'z_in_1'):
-        title_str = 'z_in_2 = %.2f, z_o = %.2f' % (data[0]['z_in_2'], data[0]['z_o'])
+        title_str = '$z_{in_2}$ = %.1f, $z_o$ = %.1f' % (data[0]['z_in_2'], data[0]['z_o'])
     else:
-        title_str = 'z_in_1 = %.2f, z_o = %.2f' % (data[0]['z_in_1'], data[0]['z_o'])
+        title_str = '$z_{in_1}$ = %.1f, $z_o$ = %.1f' % (data[0]['z_in_1'], data[0]['z_o'])
+        
+    if(x_title == 'z_o'):
+        x_title_format = '$z_o$'
+    elif(x_title == 'z_in_1'):
+        x_title_format = '$z_{in_1}$'
+    else:
+        x_title_format = '$z_{in_2}$'
+    plt.xlabel(x_title_format, fontsize=18)
        
-    plt.title('Comparision of Algorithm at ' + title_str)
-    plt.legend()
-    plt.savefig(os.path.join('build', filename.replace('pickle','eps')))    
+    plt.title(title_str, fontsize=18)
+    plt.legend(fontsize='x-large')
+    plt.savefig(os.path.join('build', x_title + '.eps'), bbox_inches='tight')    
     plt.show()
 
 
