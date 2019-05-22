@@ -13,6 +13,8 @@ from cmty import GN
 from bhcd import BHCD
 from experiment_two_level import evaluate, InfoClusterWrapper
 
+import bhcd_parameter
+
 NUM_TIMES = 5
 STEP = 10
 
