@@ -41,7 +41,8 @@ from bhcd import BHCD
 
 import bhcd_parameter
 
-logging.basicConfig(filename=os.path.join('build', 'two_level.log'), level=logging.INFO, format='%(asctime)s %(message)s')
+LOGGING_FILE = 'two_level_%d.log'%os.getpid()
+logging.basicConfig(filename=os.path.join('build', LOGGING_FILE), level=logging.INFO, format='%(asctime)s %(message)s')
 
 n = 16
 k1 = 4 # inner
@@ -291,6 +292,7 @@ if __name__ == '__main__':
         raise ValueError('unknown algorithm')
     
     if(args.evaluate > 0):
+        print('logging to', LOGGING_FILE)
         for method in methods:
             report = evaluate(args.evaluate, method, args.z_in_1, args.z_in_2, z_o)
             logging.info('final report' + json.dumps(report))
