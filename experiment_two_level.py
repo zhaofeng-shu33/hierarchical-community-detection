@@ -182,6 +182,8 @@ def construct(z_in_1, z_in_2, z_out):
 def write_gml_wrapper(G, filename, ignore_attr=False):
     if(ignore_attr):
         _G = nx.Graph()
+        for node in G.nodes():
+            _G.add_node(node)
         for edge in G.edges():
             i,j = edge
             _G.add_edge(i,j)
@@ -198,7 +200,7 @@ def graph_plot(G):
     '''
     global n, k1, k2
     time_str = datetime.now().strftime('%Y-%m-%d')
-    nx.write_gml_wrapper(G, os.path.join('build', 'two_level-%s.gml'%time_str))
+    write_gml_wrapper(G, os.path.join('build', 'two_level-%s.gml'%time_str))
     g = graphviz.Graph(filename='two_level-%s.gv'%time_str, engine='neato') # g is used for plotting
     for i in G.nodes(data=True):
         macro_index = i[1]['macro']
@@ -245,7 +247,8 @@ class InfoClusterWrapper(InfoCluster):
 if __name__ == '__main__':
     method_chocies = ['info-clustering', 'gn', 'bhcd', 'all']
     parser = argparse.ArgumentParser()
-    parser.add_argument('--save_graph', default=False, type=bool, nargs='?', const=True, help='whether to save the .gv file') 
+    parser.add_argument('--plot_graph', default=False, type=bool, nargs='?', const=True, help='whether to save the .gv file') 
+    parser.add_argument('--save_graph', default=0, type=int, help='whether to save gml file')
     parser.add_argument('--load_graph', help='use gml file to initialize the graph')     
     parser.add_argument('--save_tree', default=0, type=int, nargs='?', const=1, help='whether to save the clustering tree pdf file after clustering, =0 not save, =1 save original, =2 save simplified')     
     parser.add_argument('--alg', default='all', choices=method_chocies, help='which algorithm to run', nargs='+')
@@ -268,8 +271,10 @@ if __name__ == '__main__':
         G = nx.read_gml(os.path.join('build', args.load_graph))
     else:
         G = construct(args.z_in_1, args.z_in_2, z_o)    
-    if(args.save_graph):
+    if(args.plot_graph):
         graph_plot(G)
+    if(args.save_graph):
+        write_gml_wrapper(G, 'build/tuning.gml', args.save_graph-1)
     methods = []
     if(args.alg.count('all')>0):
         args.alg = method_chocies
