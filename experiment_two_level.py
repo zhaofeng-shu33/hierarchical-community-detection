@@ -278,7 +278,7 @@ if __name__ == '__main__':
     if(args.alg.count('gn')>0):
         methods.append(GN())
     if(args.alg.count('bhcd')>0):
-        methods.append(BHCD())
+        methods.append(BHCD(restart=50, gamma=0.2, _lambda=0.65, delta=0.3))
     if(len(methods)==0):
         raise ValueError('unknown algorithm')
     
