@@ -39,6 +39,8 @@ from info_cluster import InfoCluster
 from cmty import GN
 from bhcd import BHCD
 
+import bhcd_parameter
+
 logging.basicConfig(filename=os.path.join('build', 'two_level.log'), level=logging.INFO, format='%(asctime)s %(message)s')
 
 n = 16
@@ -283,7 +285,8 @@ if __name__ == '__main__':
     if(args.alg.count('gn')>0):
         methods.append(GN())
     if(args.alg.count('bhcd')>0):
-        methods.append(BHCD(restart=50, gamma=0.2, _lambda=0.65, delta=0.3))
+        methods.append(BHCD(restart=bhcd_parameter.restart, 
+            gamma=bhcd_parameter.gamma, _lambda=bhcd_parameter._lambda, delta=bhcd_parameter.delta))
     if(len(methods)==0):
         raise ValueError('unknown algorithm')
     

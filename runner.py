@@ -78,7 +78,8 @@ if __name__ == '__main__':
     elif(args.alg == 'gn'):
         alg = GN()
     elif(args.alg == 'bhcd'):
-        alg = BHCD()
+        alg = BHCD(restart=bhcd_parameter.restart, 
+            gamma=bhcd_parameter.gamma, _lambda=bhcd_parameter._lambda, delta=bhcd_parameter.delta)
     if(args.mode == 'z_in_1'):
         report_list = collect_z_in_1_evaluate(alg, args.d1, args.d2, args.d3, args.d4)
     elif(args.mode == 'z_in_2'):
