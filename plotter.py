@@ -36,16 +36,23 @@ def plot_ari(filename, plot_title=''):
     if(filename.find('info-clustering')>0):
         alg = 'info-clustering'
         other_alg = 'gn'
+        other_alg_2 = 'bhcd'
     elif(filename.find('gn')>0):
         alg = 'gn'
         other_alg = 'info-clustering'
-        
+        other_alg_2 = 'bhcd'
+    else:
+        raise ValueError('finename must contain info-clustering or gn')
     x_data = [i[x_title] for i in data]
     distance_data = [i['norm_rf'] for i in data]
     plt.plot(x_data, distance_data, label=alg)
-    data_2 = load_other_data(filename, alg, other_alg)
+    data_2 = load_other_data(filename, alg, other_alg)    
     if(data_2):
         plt.plot(x_data, data_2, label=other_alg)
+    data_3 = load_other_data(filename, alg, other_alg_2)    
+    if(data_3):
+        plt.plot(x_data, data_3, label=other_alg_2)
+        
     plt.xlabel(x_title)
     plt.ylabel('norm rf')
     if(x_title == 'z_o'):
