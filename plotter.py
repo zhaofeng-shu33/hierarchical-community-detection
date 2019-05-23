@@ -69,7 +69,10 @@ def plot_ari(filename, plot_title=''):
     plt.xlabel(x_title_format, fontsize=18)
        
     plt.title(title_str, fontsize=18)
-    plt.legend(fontsize='x-large')
+    if(x_title == 'z_o'):
+            plt.legend(fontsize='x-large', loc='best', bbox_to_anchor=(1, 0.5))
+    else:
+        plt.legend(fontsize='x-large')
     plt.savefig(os.path.join('build', x_title + '.eps'), bbox_inches='tight')    
     plt.show()
 
