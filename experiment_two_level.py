@@ -182,6 +182,18 @@ def construct(z_in_1, z_in_2, z_out):
                         G.add_edge(i[0], j[0])
     return G    
 
+def info_clustering_add_weight(G):
+    # G is modified within this function
+    # for each edge, the weight equals the number of triangles + beta(default to 1)    
+    beta = 1
+    for e in G.edges():
+        i, j = e
+        G[i][j]['weight'] = beta
+        for n in G.nodes():
+            if(G[i].get(n) is not None and G[j].get(n) is not None):
+                G[i][j]['weight'] += 1
+        G[i][j]['weight'] = G[i][j]['weight']
+        
 def write_gml_wrapper(G, filename, ignore_attr=False):
     if(ignore_attr):
         _G = nx.Graph()
@@ -193,7 +205,8 @@ def write_gml_wrapper(G, filename, ignore_attr=False):
             
         # remove the attribute of _G
     else:
-        _G = G
+        _G = G.copy()
+        info_clustering_add_weight(_G)
     nx.write_gml(_G, filename)
         
 def graph_plot(G):
@@ -233,16 +246,8 @@ class InfoClusterWrapper(InfoCluster):
         super().__init__(affinity='precomputed')
     def fit(self, _G, weight_method='triangle-power'):
         G = _G.copy()
-        if(weight_method=='triangle-power'):
-            # for each edge, the weight equals the number of triangles + beta(default to 1)
-            beta = 1
-            for e in G.edges():
-                i, j = e
-                G[i][j]['weight'] = beta
-                for n in G.nodes():
-                    if(G[i].get(n) is not None and G[j].get(n) is not None):
-                        G[i][j]['weight'] += 1
-                G[i][j]['weight'] = G[i][j]['weight']
+        if(weight_method=='triangle-power'):            
+            info_clustering_add_weight(G)
         try:
             super().fit(G, use_pdt=True)
         except RuntimeError as e:
@@ -255,7 +260,7 @@ if __name__ == '__main__':
     method_chocies = ['info-clustering', 'gn', 'bhcd', 'all']
     parser = argparse.ArgumentParser()
     parser.add_argument('--plot_graph', default=False, type=bool, nargs='?', const=True, help='whether to save the .gv file') 
-    parser.add_argument('--save_graph', default=0, type=int, help='whether to save gml file')
+    parser.add_argument('--save_graph', default=0, type=int, help='whether to save gml file, =0 not save(default), =1 save complete, =2 save without attribute')
     parser.add_argument('--load_graph', help='use gml file to initialize the graph')     
     parser.add_argument('--save_tree', default=0, type=int, nargs='?', const=1, help='whether to save the clustering tree pdf file after clustering, =0 not save, =1 save original, =2 save simplified')     
     parser.add_argument('--alg', default='all', choices=method_chocies, help='which algorithm to run', nargs='+')
