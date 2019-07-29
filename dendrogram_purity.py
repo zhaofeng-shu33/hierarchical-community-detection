@@ -20,7 +20,7 @@ def lca(tree, i, j):
 
 def set_purity(A, B):
     numerator = len(set(A).intersection(B))
-    denominator = len(B)
+    denominator = len(A)
     return numerator*1.0/denominator
     
 def dendrogram_purity(tree, leaf_partition):
@@ -29,7 +29,10 @@ def dendrogram_purity(tree, leaf_partition):
     for Ck in leaf_partition:
         for i in range(len(Ck)):
             for j in range(i+1, len(Ck)):
+                index_i = Ck[i]
+                index_j = Ck[j]
                 cnt += 1
-                lca_set = lca(tree, i, j)
+                lca_set = lca(tree, index_i, index_j)
                 purity += set_purity(lca_set, Ck)
     purity /= cnt
+    return purity
