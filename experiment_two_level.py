@@ -40,6 +40,7 @@ from cmty import GN
 from bhcd import BHCD
 
 import bhcd_parameter
+from dendrogram_purity import dendrogram_purity
 
 LOGGING_FILE = 'two_level_%d.log'%os.getpid()
 logging.basicConfig(filename=os.path.join('build', LOGGING_FILE), level=logging.INFO, format='%(asctime)s %(message)s')
@@ -53,6 +54,7 @@ shape_list = ['sphere', 'circle', 'sphere', 'sphere']
 
 st = open('ground_truth.txt').read()
 ground_truth_tree = Tree(st)
+ground_truth_labels = [[i*16+j for j in range(16)] for i in range(16)]
 # construct
             
 def plot_clustering_tree(tree, alg_name, cutting=0):
@@ -113,12 +115,18 @@ def add_category_info(G, tree):
         micro_index = G.nodes[int(n.name)]['micro']        
         n.add_features(macro=macro_index, micro=micro_index)
 
-def evaluate_single(alg, G):
-    alg.fit(G)    
-    res = alg.tree.compare(ground_truth_tree, unrooted=True)
-    return res['norm_rf']
+def evaluate_single(alg, G, metric):
+    alg.fit(G)
+    if(metric == 'norm_rf'):    
+        res = alg.tree.compare(ground_truth_tree, unrooted=True)
+        metric_score = res['norm_rf']
+    elif(metric == 'dendrogram_purity'):
+        metric_score = dendrogram_purity(alg.tree, ground_truth_labels)
+    else:
+        raise ValueError("unknown metric %s" % metric)
+    return metric_score
     
-def evaluate(num_times, alg, z_in_1, z_in_2, z_o):
+def evaluate(num_times, alg, z_in_1, z_in_2, z_o, metric):
     '''
         num_times: int
         alg: algorithm class
@@ -135,7 +143,7 @@ def evaluate(num_times, alg, z_in_1, z_in_2, z_o):
     logging.info('eval ' + str(type(alg)) + ' num_times=%d, z_in_1=%f,z_in_2=%f, z_o=%f'%(num_times, z_in_1, z_in_2, z_o))
     for i in range(num_times):
         G = construct(z_in_1, z_in_2, z_o)
-        norm_rf = evaluate_single(alg, G)
+        norm_rf = evaluate_single(alg, G, metric)
         logging.info('round {0}: with norm_rf={1}'.format(i, norm_rf))
         report['norm_rf'] += norm_rf
     report['norm_rf'] /= num_times
@@ -264,6 +272,7 @@ if __name__ == '__main__':
     parser.add_argument('--load_graph', help='use gml file to initialize the graph')     
     parser.add_argument('--save_tree', default=0, type=int, nargs='?', const=1, help='whether to save the clustering tree pdf file after clustering, =0 not save, =1 save original, =2 save simplified')     
     parser.add_argument('--alg', default='all', choices=method_chocies, help='which algorithm to run', nargs='+')
+    parser.add_argument('--metric', default='norm_rf', choices=['norm_rf', 'dendrogram_purity'], help='which evaluation metric to choose')
     parser.add_argument('--weight', default='triangle-power', help='for info-clustering method, the edge weight shold be used. This parameters'
         ' specifies how to modify the edge weight.')    
     parser.add_argument('--z_in_1', default=14.0, type=float, help='inter-micro-community node average degree')      
@@ -303,14 +312,14 @@ if __name__ == '__main__':
     if(args.evaluate > 0):
         print('logging to', LOGGING_FILE)
         for method in methods:
-            report = evaluate(args.evaluate, method, args.z_in_1, args.z_in_2, z_o)
+            report = evaluate(args.evaluate, method, args.z_in_1, args.z_in_2, z_o, args.metric)
             logging.info('final report' + json.dumps(report))
     else:
         for i, method in enumerate(methods):
             alg_name = args.alg[i]
             print('running ' + alg_name)
-            dis = evaluate_single(method, G)            
-            print('tree distance is', dis)            
+            dis = evaluate_single(method, G, args.metric)            
+            print(args.metric, dis)            
             if(args.save_tree):
                 add_category_info(G, method.tree)
                 plot_clustering_tree(method.tree, alg_name, args.save_tree - 1)
