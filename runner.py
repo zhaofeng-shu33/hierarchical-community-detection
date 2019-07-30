@@ -18,33 +18,33 @@ import bhcd_parameter
 NUM_TIMES = 5
 STEP = 10
 
-def collect_z_o_evaluate(alg, z_in_1, z_in_2, z_min, z_max):
+def collect_z_o_evaluate(alg, z_in_1, z_in_2, z_min, z_max, metric):
     '''z_in_1, z_in_2 are fixed
     '''
     print('evaluate z_o while fixing z_in_1 = %.2f and z_in_2 = %.2f' %(z_in_1, z_in_2))        
     report_list = []
     for z_o in np.linspace(z_min, z_max, num=STEP):
-        report = evaluate(NUM_TIMES, alg, z_in_1, z_in_2, z_o)
+        report = evaluate(NUM_TIMES, alg, z_in_1, z_in_2, z_o, metric)
         report_list.append(report)
     return report_list
 
-def collect_z_in_2_evaluate(alg, z_in_1, z_o, z_in_2_min, z_in_2_max):
+def collect_z_in_2_evaluate(alg, z_in_1, z_o, z_in_2_min, z_in_2_max, metric):
     '''z_in_1, z_o are fixed
     '''
     print('evaluate z_in_2 while fixing z_in_1 = %.2f and z_o = %.2f' %(z_in_1, z_o))    
     report_list = []
     for z_in_2 in np.linspace(z_in_2_min, z_in_2_max, num=STEP):
-        report = evaluate(NUM_TIMES, alg, z_in_1, z_in_2, z_o)
+        report = evaluate(NUM_TIMES, alg, z_in_1, z_in_2, z_o, metric)
         report_list.append(report)
     return report_list
 
-def collect_z_in_1_evaluate(alg, z_in_2, z_o, z_in_1_min, z_in_1_max):
+def collect_z_in_1_evaluate(alg, z_in_2, z_o, z_in_1_min, z_in_1_max, metric):
     '''z_in_2, z_o are fixed
     '''
     print('evaluate z_in_1 while fixing z_in_2 = %.2f and z_o = %.2f' %(z_in_2, z_o))
     report_list = []
     for z_in_1 in np.linspace(z_in_1_min, z_in_1_max, num=STEP):
-        report = evaluate(NUM_TIMES, alg, z_in_1, z_in_2, z_o)
+        report = evaluate(NUM_TIMES, alg, z_in_1, z_in_2, z_o, metric)
         report_list.append(report)
     return report_list
     
@@ -67,6 +67,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_of_times', default=NUM_TIMES, type=int, help='number of times to average each evaluate')
     parser.add_argument('--mode', default='z_in_1', choices=mode_choices, help='in which mode to generate plotting data')    
     parser.add_argument('--alg', default='info-clustering', help='which algorithm to use', choices=method_choices)
+    parser.add_argument('--metric', default='norm_rf', choices=['norm_rf', 'dendrogram_purity'], help='which evaluation metric to choose')    
     parser.add_argument('d1', type=float, help='first input value')    
     parser.add_argument('d2', type=float, help='second input value')    
     parser.add_argument('d3', type=float, help='third input value')    
@@ -82,14 +83,14 @@ if __name__ == '__main__':
     elif(args.alg == 'bhcd'):
         alg = BHCD(restart=bhcd_parameter.restart, 
             gamma=bhcd_parameter.gamma, _lambda=bhcd_parameter._lambda, delta=bhcd_parameter.delta)
-            
+    
     print('logging to', LOGGING_FILE) 
     
     if(args.mode == 'z_in_1'):
-        report_list = collect_z_in_1_evaluate(alg, args.d1, args.d2, args.d3, args.d4)
+        report_list = collect_z_in_1_evaluate(alg, args.d1, args.d2, args.d3, args.d4, args.metric)
     elif(args.mode == 'z_in_2'):
-        report_list = collect_z_in_2_evaluate(alg, args.d1, args.d2, args.d3, args.d4)
+        report_list = collect_z_in_2_evaluate(alg, args.d1, args.d2, args.d3, args.d4, args.metric)
     else:
-        report_list = collect_z_o_evaluate(alg, args.d1, args.d2, args.d3, args.d4)
+        report_list = collect_z_o_evaluate(alg, args.d1, args.d2, args.d3, args.d4, args.metric)
         
-    save_to_file(report_list, args.mode, NUM_TIMES, args.alg, args.d1, args.d2, args.d3, args.d4)
+    save_to_file(report_list, args.mode, NUM_TIMES, args.metric, args.alg, args.d1, args.d2, args.d3, args.d4)
