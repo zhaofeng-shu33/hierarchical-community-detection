@@ -27,7 +27,7 @@ def reproduce_z_in_1(alg_name_list, metric):
     for alg_name in alg_name_list:
         alg = initialize_alg(alg_name)
         report_list = runner.collect_z_in_1_evaluate(alg, Z_IN_2, Z_O, Z_IN_1_MIN, Z_IN_1_MAX, metric)
-        runner.save_to_file(report_list, 'z_in_1', runner.NUM_TIMES, alg_name, Z_IN_2, Z_O, Z_IN_1_MIN, Z_IN_1_MAX)
+        runner.save_to_file(report_list, 'z_in_1', runner.NUM_TIMES, metric, alg_name, Z_IN_2, Z_O, Z_IN_1_MIN, Z_IN_1_MAX)
 
 def reproduce_z_in_2(alg_name_list, metric):
     Z_IN_1 = 13
@@ -37,7 +37,7 @@ def reproduce_z_in_2(alg_name_list, metric):
     for alg_name in alg_name_list:
         alg = initialize_alg(alg_name)
         report_list = runner.collect_z_in_2_evaluate(alg, Z_IN_1, Z_O, Z_IN_2_MIN, Z_IN_2_MAX, metric)
-        runner.save_to_file(report_list, 'z_in_2', runner.NUM_TIMES, alg_name, Z_IN_1, Z_O, Z_IN_2_MIN, Z_IN_2_MAX)
+        runner.save_to_file(report_list, 'z_in_2', runner.NUM_TIMES, metric, alg_name, Z_IN_1, Z_O, Z_IN_2_MIN, Z_IN_2_MAX)
 
 def reproduce_z_o(alg_name_list, metric):
     Z_IN_1 = 14
@@ -47,7 +47,7 @@ def reproduce_z_o(alg_name_list, metric):
     for alg_name in alg_name_list:
         alg = initialize_alg(alg_name)
         report_list = runner.collect_z_o_evaluate(alg, Z_IN_1, Z_IN_2, Z_O_MIN, Z_O_MAX, metric)
-        runner.save_to_file(report_list, 'z_o', runner.NUM_TIMES, alg_name, Z_IN_1, Z_IN_2, Z_O_MIN, Z_O_MAX)
+        runner.save_to_file(report_list, 'z_o', runner.NUM_TIMES, metric, alg_name, Z_IN_1, Z_IN_2, Z_O_MIN, Z_O_MAX)
 
 class BHCDWrapper(BHCD):
     def __init__(self):
