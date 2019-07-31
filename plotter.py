@@ -52,7 +52,12 @@ def plot_ari(filename, plot_title=''):
     data_3 = load_other_data(filename, alg, other_alg_2)    
     if(data_3):
         plt.plot(x_data, data_3, label=other_alg_2, linewidth=3, color='blue', marker='x', markersize=12)
-    plt.ylabel('distance', fontsize=18)
+        
+    if(filename.find('dendrogram_purity')>0):
+        y_label_name = 'dendrogram purity'
+    else:
+        y_label_name = 'distance'
+    plt.ylabel(y_label_name, fontsize=18)
     if(x_title == 'z_o'):
         title_str = '$z_{in_1}$ = %.1f, $z_{in_2}$ = %.1f' % (data[0]['z_in_1'], data[0]['z_in_2'])
     elif(x_title == 'z_in_1'):
