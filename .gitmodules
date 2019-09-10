@@ -1,0 +1,6 @@
+[submodule "cmty"]
+	path = cmty
+	url = https://github.com/zhaofeng-shu33/community
+[submodule "bhcd"]
+	path = bhcd
+	url = https://github.com/zhaofeng-shu33/bhcd
