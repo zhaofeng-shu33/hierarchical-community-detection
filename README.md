@@ -5,11 +5,11 @@
 
 The following command will produce ideal result occasionally. By ideal result we mean the clustering tree has
 the same topology structure with that of the ground truth. 
-```python
+```shell
 python experiment_two_level.py --z_in_2=2.5 --z_o=0.2 --alg=info-clustering
 ```
 to produce one curve for one method,
-```python
+```shell
 python runner.py --num_of_times=20 --mode=z_in_1 --alg=info-clustering 3 1 10 15
 ```
 # Limitations
