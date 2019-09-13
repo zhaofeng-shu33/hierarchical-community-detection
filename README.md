@@ -13,7 +13,8 @@ to produce one curve for one method,
 python runner.py --num_of_times=20 --mode=z_in_1 --alg=info-clustering 3 1 10 15
 ```
 # Limitations
-GN method is implementated in pure Python. It is quite slow to run one fit.
+* GN method is implementated in pure Python. It is quite slow to run one fit.
+* BHCD works incorrectly on Windows.
 
 # How to reproduce the experiment results
 See `reproduce_experiment.py`. You need to run for many hours since we repeat for 20 times and in each time we evaluate at 10 configuration.
