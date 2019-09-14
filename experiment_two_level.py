@@ -16,6 +16,7 @@ As we can see, if the graph has deep hierachical structure, info-cluster has adv
 '''
 import random
 import argparse
+from time import time
 from datetime import datetime
 import pdb
 import logging
@@ -42,8 +43,6 @@ from bhcd import BHCD
 import bhcd_parameter
 from dendrogram_purity import dendrogram_purity
 
-LOGGING_FILE = 'two_level_%d.log'%os.getpid()
-logging.basicConfig(filename=os.path.join('build', LOGGING_FILE), level=logging.INFO, format='%(asctime)s %(message)s')
 
 n = 16
 k1 = 4 # inner
@@ -279,7 +278,8 @@ if __name__ == '__main__':
     parser.add_argument('--z_in_2', default=3.0, type=float, help='intra-micro-community node average degree')          
     parser.add_argument('--z_o', default=-1, type=float, help='intra-macro-community node average degree')              
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode')                  
-    parser.add_argument('--evaluate', default=0, type=int, help='whether to evaluate the method instead of run once')                      
+    parser.add_argument('--evaluate', default=0, type=int, help='whether to evaluate the method instead of run once')
+    parser.add_argument('--time', default=False, type=bool, nargs='?', const=True, help='whether to time the algorithm run')
     args = parser.parse_args()
     method_chocies.pop()
     if(args.debug):
@@ -310,6 +310,8 @@ if __name__ == '__main__':
         raise ValueError('unknown algorithm')
     
     if(args.evaluate > 0):
+        LOGGING_FILE = 'two_level_%d.log'%os.getpid()
+        logging.basicConfig(filename=os.path.join('build', LOGGING_FILE), level=logging.INFO, format='%(asctime)s %(message)s')    
         print('logging to', LOGGING_FILE)
         for method in methods:
             report = evaluate(args.evaluate, method, args.z_in_1, args.z_in_2, z_o, args.metric)
@@ -318,7 +320,11 @@ if __name__ == '__main__':
         for i, method in enumerate(methods):
             alg_name = args.alg[i]
             print('running ' + alg_name)
-            dis = evaluate_single(method, G, args.metric)            
+            start_time = time()
+            dis = evaluate_single(method, G, args.metric)
+            if(args.time):
+                time_elapsed = time() - start_time
+                print('elapsed time: %f' % time_elapsed)
             print(args.metric, dis)            
             if(args.save_tree):
                 add_category_info(G, method.tree)
