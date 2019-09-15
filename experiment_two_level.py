@@ -37,7 +37,7 @@ except ImportError:
     pass
 
 from info_cluster import InfoCluster
-from cmty import GN
+from GN.GN import GN
 from bhcd import BHCD
 
 import bhcd_parameter

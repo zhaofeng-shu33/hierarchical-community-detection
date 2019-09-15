@@ -1,6 +1,6 @@
-[submodule "cmty"]
-	path = cmty
-	url = https://github.com/zhaofeng-shu33/community
 [submodule "bhcd-python-wrapper"]
 	path = bhcd
 	url = https://github.com/zhaofeng-shu33/bhcd-python-wrapper
+[submodule "GN"]
+	path = GN
+	url = https://github.com/zhaofeng-shu33/Girvan-Newman
