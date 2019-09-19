@@ -37,7 +37,7 @@ except ImportError:
     pass
 
 from info_cluster import InfoCluster
-from GN.GN import GN
+from GN import GN
 from bhcd import BHCD
 
 import bhcd_parameter
@@ -235,11 +235,11 @@ def graph_plot(G):
         if(i_attr['macro'] != j_attr['macro']):
             edge_len = 2
             weight_value = 0.1
-            edge_color = 'black'
+            edge_color = 'blue'
         elif(i_attr['micro'] != j_attr['micro']):
             weight_value = 1
             edge_len = 1
-            edge_color = 'black'
+            edge_color = 'blue'
         else:
             weight_value = 10
             edge_len = 0.5
