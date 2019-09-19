@@ -256,7 +256,7 @@ class InfoClusterWrapper(InfoCluster):
         if(weight_method=='triangle-power'):            
             info_clustering_add_weight(G)
         try:
-            super().fit(G, use_pdt=True)
+            super().fit(G)
         except RuntimeError as e:
             print(e)
             # dump the graph
