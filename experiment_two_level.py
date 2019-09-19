@@ -245,7 +245,7 @@ def graph_plot(G):
             edge_len = 0.5
             macro_index = i_attr['macro']
             edge_color = color_list[macro_index]
-        g.edge(str(i), str(j), weight=str(weight_value), penwidth="0.3", len=str(edge_len), color=edge_color)    
+        g.edge(str(i), str(j), weight=str(weight_value), penwidth="0.3", len=str(edge_len), color=edge_color, style='dotted')
     g.save(directory='build')    
 
 class InfoClusterWrapper(InfoCluster):
