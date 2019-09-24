@@ -1,5 +1,5 @@
 # run this script file concurrently with 9 threads
-from cmty import GN
+from GN import GN
 from bhcd import BHCD
 from experiment_two_level import evaluate, InfoClusterWrapper
 import bhcd_parameter
