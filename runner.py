@@ -9,9 +9,9 @@ import pdb
 import numpy as np
 from datetime import datetime
 
-from cmty import GN
+from GN import GN
 from bhcd import BHCD
-from experiment_two_level import evaluate, InfoClusterWrapper, LOGGING_FILE
+from experiment_two_level import evaluate, InfoClusterWrapper
 
 import bhcd_parameter
 
@@ -83,8 +83,6 @@ if __name__ == '__main__':
     elif(args.alg == 'bhcd'):
         alg = BHCD(restart=bhcd_parameter.restart, 
             gamma=bhcd_parameter.gamma, _lambda=bhcd_parameter._lambda, delta=bhcd_parameter.delta)
-    
-    print('logging to', LOGGING_FILE) 
     
     if(args.mode == 'z_in_1'):
         report_list = collect_z_in_1_evaluate(alg, args.d1, args.d2, args.d3, args.d4, args.metric)
