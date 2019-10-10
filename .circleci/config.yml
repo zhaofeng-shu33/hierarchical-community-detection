@@ -8,7 +8,7 @@ jobs:
     executor: my-executor
     steps:
       - checkout
-      - run: pip install -r requirements.txt
+      - run: sudo pip install -r requirements.txt
       - persist_to_workspace:
           root: /usr/local/lib
           paths:
@@ -61,7 +61,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./
-      - run: pip install matplotlib
+      - run: sudo pip install matplotlib
       - run: python plotter.py --format svg --filename z_in_1
       - run: python plotter.py --format svg --filename z_in_2
       - run: python plotter.py --format svg --filename z_o
