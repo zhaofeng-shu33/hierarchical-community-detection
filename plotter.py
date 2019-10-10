@@ -86,11 +86,18 @@ def plot_ari(filename, plot_title=''):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('filename', help='pickle file to load')
+    parser.add_argument('--filename', help='pickle file to load', default='search')
     parser.add_argument('--show_pic', default=False, type=bool, nargs='?', const=True, help='whether to show the picture interactively')
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode') 
     args = parser.parse_args()
-    if(args.debug):
+    if args.debug:
         pdb.set_trace()
+    if args.filename == 'search':
+        for i in os.listdir('build'):
+            if i.find('.pickle') > 0:
+                file_name = i
+                break
+    else:
+        file_name = args.filename
     SHOW_PICTURE = args.show_pic
-    plot_ari(args.filename)    
+    plot_ari(file_name)
