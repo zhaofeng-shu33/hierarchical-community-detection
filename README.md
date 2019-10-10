@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/zhaofeng-shu33/hierarchical-community-detection.svg?branch=master)](https://travis-ci.com/zhaofeng-shu33/hierarchical-community-detection)
+
 # Description
 `experiment_two_level.py` is the main script. It contains many utility functions for computing, data loading and saving, and plotting.
 `runner.py` is the experiment runner. It is a wrapper of `experiment_two_level.py`.

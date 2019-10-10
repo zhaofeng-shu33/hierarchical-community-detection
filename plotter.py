@@ -6,6 +6,7 @@ import argparse
 import pdb
 
 import matplotlib.pyplot as plt
+SHOW_PICTURE = False
 
 def load_other_data(filename, alg, other_alg):
     new_filename = filename.replace(alg, other_alg)
@@ -74,19 +75,22 @@ def plot_ari(filename, plot_title=''):
     plt.xlabel(x_title_format, fontsize=18)
        
     plt.title(title_str, fontsize=18)
-    if(x_title == 'z_o'):
-            plt.legend(fontsize='x-large', loc='best', bbox_to_anchor=(1, 0.5))
+    if x_title == 'z_o':
+        plt.legend(fontsize='x-large', loc='best', bbox_to_anchor=(1, 0.5))
     else:
         plt.legend(fontsize='x-large')
-    plt.savefig(os.path.join('build', x_title + '.eps'), bbox_inches='tight')    
-    plt.show()
+    plt.savefig(os.path.join('build', x_title + '.eps'), bbox_inches='tight')
+    if SHOW_PICTURE:
+        plt.show()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', help='pickle file to load')
+    parser.add_argument('--show_pic', default=False, type=bool, nargs='?', const=True, help='whether to show the picture interactively')
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode') 
     args = parser.parse_args()
     if(args.debug):
         pdb.set_trace()
+    SHOW_PICTURE = args.show_pic
     plot_ari(args.filename)    
