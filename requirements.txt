@@ -3,3 +3,4 @@ networkx
 graphviz
 info_cluster
 ete-dendrogram-purity
+bhcd
