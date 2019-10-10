@@ -1,0 +1,87 @@
+version: 2.1
+executors:
+  my-executor:
+    docker:
+      - image: circleci/python3.7.3
+jobs:
+  install:
+    executor: my-executor
+    steps:
+      - run: pip install -r requirements.txt
+      - persist_to_workspace:
+          root: /usr/local/lib
+          paths:
+            - python3.7/site-packages
+  zin1:
+    executor: my-executor
+    steps:
+      - checkout
+      - attach_workspace:
+        at: /usr/local/lib
+      - run: python runner.py --mode z_in_1 --num_of_times=1 --alg=info-clustering 3 1 10 15
+      - run: python runner.py --mode z_in_1 --num_of_times=1 --alg=gn 3 1 10 15
+      - run: python runner.py --mode z_in_1 --num_of_times=1 --alg=bhcd 3 1 10 15
+      - run: cat build/*.log
+      - persist_to_workspace:
+          root: build
+          paths:
+            - *.pickle
+  zin2:
+    executor: my-executor
+    steps:
+      - checkout
+      - attach_workspace:
+        at: /usr/local/lib
+      - run: python runner.py --mode z_in_2 --num_of_times=1 --alg=info-clustering 13 0.5 2 5
+      - run: python runner.py --mode z_in_2 --num_of_times=1 --alg=gn 13 0.5 2 5
+      - run: python runner.py --mode z_in_2 --num_of_times=1 --alg=bhcd 13 0.5 2 5
+      - run: cat build/*.log
+      - persist_to_workspace:
+          root: build
+          paths:
+            - *.pickle
+  zo:
+    executor: my-executor
+    steps:
+      - checkout
+      - attach_workspace:
+        at: /usr/local/lib
+      - run: python runner.py --mode z_o --num_of_times=1 --alg=info-clustering 14 3 0.25 2
+      - run: python runner.py --mode z_o --num_of_times=1 --alg=gn 14 3 0.25 2
+      - run: python runner.py --mode z_o --num_of_times=1 --alg=bhcd 14 3 0.25 2
+      - run: cat build/*.log
+      - persist_to_workspace:
+          root: build
+          paths:
+            - *.pickle
+  plot:
+    executor: my-executor
+    steps:
+      - checkout
+      - pip install matplotlib
+      - run: python plotter.py --format svg --filename z_in_1
+      - run: python plotter.py --format svg --filename z_in_2
+      - run: python plotter.py --format svg --filename z_o
+      - store_artifacts:
+          path: ./build
+          destination: plot
+workflows:
+  version:2
+  experiment:
+    jobs:
+      - install
+      - zin1:
+          requires:
+            - install
+      - zin2:
+          requires:
+            - install
+      - zo:
+          requires:
+            - install            
+      - plot:
+          requires:
+            - zin1
+            - zin2
+            - zo
+      

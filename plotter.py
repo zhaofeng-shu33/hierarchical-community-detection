@@ -22,7 +22,7 @@ def load_other_data(filename, alg, other_alg):
     data = pickle.load(f)
     return [i['norm_rf'] for i in data]
 
-def plot_ari(filename, plot_title=''):
+def plot_ari(filename, plot_title='', pic_format='eps'):
     '''combine different algorithms
     '''
     f = open(os.path.join('build', filename), 'rb')
@@ -79,25 +79,26 @@ def plot_ari(filename, plot_title=''):
         plt.legend(fontsize='x-large', loc='best', bbox_to_anchor=(1, 0.5))
     else:
         plt.legend(fontsize='x-large')
-    plt.savefig(os.path.join('build', x_title + '.eps'), bbox_inches='tight')
+    plt.savefig(os.path.join('build', x_title + '.' + pic_format), bbox_inches='tight')
     if SHOW_PICTURE:
         plt.show()
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--filename', help='pickle file to load', default='search')
+    parser.add_argument('--filename', help='pickle file to load, support glob pattern', default='pickle')
     parser.add_argument('--show_pic', default=False, type=bool, nargs='?', const=True, help='whether to show the picture interactively')
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode') 
+    parser.add_argument('--format', default='eps', choices=['eps', 'svg'])
     args = parser.parse_args()
     if args.debug:
         pdb.set_trace()
-    if args.filename == 'search':
+    if args.filename.find('.pickle') < 0:
         for i in os.listdir('build'):
-            if i.find('.pickle') > 0:
+            if i.find('.pickle') > 0 and i.find(args.filename) >= 0:
                 file_name = i
                 break
     else:
         file_name = args.filename
     SHOW_PICTURE = args.show_pic
-    plot_ari(file_name)
+    plot_ari(file_name, '', args.format)
