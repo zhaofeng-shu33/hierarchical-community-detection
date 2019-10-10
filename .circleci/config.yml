@@ -68,7 +68,7 @@ jobs:
           path: ./build
           destination: plot
 workflows:
-  version:2
+  version: 2
   experiment:
     jobs:
       - install
