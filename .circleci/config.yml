@@ -59,8 +59,8 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ./   
-      - pip install matplotlib
+          at: ./
+      - run: pip install matplotlib
       - run: python plotter.py --format svg --filename z_in_1
       - run: python plotter.py --format svg --filename z_in_2
       - run: python plotter.py --format svg --filename z_o
