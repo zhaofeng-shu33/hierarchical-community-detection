@@ -23,9 +23,9 @@ jobs:
       - run: python runner.py --mode z_in_1 --num_of_times=1 --alg=bhcd 3 1 10 15
       - run: cat build/*.log
       - persist_to_workspace:
-          root: build
+          root: /tmp
           paths:
-            - *.pickle
+            - build/*.pickle
   zin2:
     executor: my-executor
     steps:
@@ -37,9 +37,9 @@ jobs:
       - run: python runner.py --mode z_in_2 --num_of_times=1 --alg=bhcd 13 0.5 2 5
       - run: cat build/*.log
       - persist_to_workspace:
-          root: build
+          root: /tmp
           paths:
-            - *.pickle
+            - build/*.pickle
   zo:
     executor: my-executor
     steps:
@@ -51,13 +51,15 @@ jobs:
       - run: python runner.py --mode z_o --num_of_times=1 --alg=bhcd 14 3 0.25 2
       - run: cat build/*.log
       - persist_to_workspace:
-          root: build
+          root: /tmp
           paths:
-            - *.pickle
+            - build/*.pickle
   plot:
     executor: my-executor
     steps:
       - checkout
+      - attach_workspace:
+          at: ./   
       - pip install matplotlib
       - run: python plotter.py --format svg --filename z_in_1
       - run: python plotter.py --format svg --filename z_in_2
