@@ -17,7 +17,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: /usr/local/lib
+          at: /usr/local/lib
       - run: python runner.py --mode z_in_1 --num_of_times=1 --alg=info-clustering 3 1 10 15
       - run: python runner.py --mode z_in_1 --num_of_times=1 --alg=gn 3 1 10 15
       - run: python runner.py --mode z_in_1 --num_of_times=1 --alg=bhcd 3 1 10 15
@@ -31,7 +31,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: /usr/local/lib
+          at: /usr/local/lib
       - run: python runner.py --mode z_in_2 --num_of_times=1 --alg=info-clustering 13 0.5 2 5
       - run: python runner.py --mode z_in_2 --num_of_times=1 --alg=gn 13 0.5 2 5
       - run: python runner.py --mode z_in_2 --num_of_times=1 --alg=bhcd 13 0.5 2 5
@@ -45,7 +45,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: /usr/local/lib
+          at: /usr/local/lib
       - run: python runner.py --mode z_o --num_of_times=1 --alg=info-clustering 14 3 0.25 2
       - run: python runner.py --mode z_o --num_of_times=1 --alg=gn 14 3 0.25 2
       - run: python runner.py --mode z_o --num_of_times=1 --alg=bhcd 14 3 0.25 2
@@ -86,4 +86,3 @@ workflows:
             - zin1
             - zin2
             - zo
-      
