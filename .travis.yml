@@ -1,0 +1,7 @@
+os: linux
+dist: xenial
+language: python
+python: 3.6
+
+script:
+  - python experiment_two_level.py --alg all
