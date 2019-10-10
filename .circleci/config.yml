@@ -7,6 +7,7 @@ jobs:
   install:
     executor: my-executor
     steps:
+      - checkout
       - run: pip install -r requirements.txt
       - persist_to_workspace:
           root: /usr/local/lib
