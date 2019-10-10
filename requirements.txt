@@ -8,3 +8,4 @@ pygncd
 ete3
 six
 scipy
+GN
