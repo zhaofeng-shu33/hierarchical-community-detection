@@ -3,7 +3,7 @@ networkx
 graphviz
 info_cluster
 ete-dendrogram-purity
-bhcd
+bhcd==0.2
 pygncd
 ete3
 six
