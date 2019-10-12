@@ -65,6 +65,7 @@ jobs:
       - run: python plotter.py --format svg --filename z_in_1
       - run: python plotter.py --format svg --filename z_in_2
       - run: python plotter.py --format svg --filename z_o
+      - run: rm ./build/*.pickle
       - store_artifacts:
           path: ./build
           destination: plot

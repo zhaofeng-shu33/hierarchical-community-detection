@@ -95,7 +95,7 @@ if __name__ == '__main__':
         pdb.set_trace()
     if args.filename.find('.pickle') < 0:
         for i in os.listdir('build'):
-            if i.find('.pickle') > 0 and i.find(args.filename) >= 0:
+            if i.find('.pickle') > 0 and i.find(args.filename) >= 0 and i.find('info-clustering') >= 0:
                 file_name = i
                 break
     else:
