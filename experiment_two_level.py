@@ -329,3 +329,5 @@ if __name__ == '__main__':
             if(args.save_tree):
                 add_category_info(G, method.tree)
                 plot_clustering_tree(method.tree, alg_name, args.save_tree - 1)
+else:
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
