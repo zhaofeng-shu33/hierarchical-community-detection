@@ -12,7 +12,7 @@ jobs:
       - persist_to_workspace:
           root: /home/circleci/.local/lib
           paths:
-            - python3.7/site-packages
+            - python3.6/site-packages
   zin1:
     executor: my-executor
     steps:
