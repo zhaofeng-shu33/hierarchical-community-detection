@@ -1,0 +1,17 @@
+job1:
+  tags:
+    - self-hosted
+  script:
+    - mkdir build
+    - python3 -m pip install --user requirements.txt
+    - NUM_TIMES=1 METRIC=norm_rf python3 reproduce_experiment.py
+    - python3 -m pip install --user matplatlib
+    - python3 plot.py --format svg --filename z_in_1
+    - python3 plot.py --format svg --filename z_in_2
+    - python3 plot.py --format svg --filename z_o
+  artifacts:
+    paths:
+      - build/z_in_1.svg
+      - build/z_in_2.svg
+      - build/z_o.svg
+
