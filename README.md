@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/zhaofeng-shu33/hierarchical-community-detection.svg?branch=master)](https://travis-ci.com/zhaofeng-shu33/hierarchical-community-detection)
-
+[![CircleCI](https://circleci.com/gh/zhaofeng-shu33/hierarchical-community-detection.svg?style=svg)](https://circleci.com/gh/zhaofeng-shu33/hierarchical-community-detection)
 # Description
 `experiment_two_level.py` is the main script. It contains many utility functions for computing, data loading and saving, and plotting.
 `runner.py` is the experiment runner. It is a wrapper of `experiment_two_level.py`.
@@ -17,4 +17,6 @@ python runner.py --num_of_times=20 --mode=z_in_1 --alg=info-clustering 3 1 10 15
 
 
 # How to reproduce the experiment results
+Running artifacts can be viewed from [circleci](https://circleci.com/gh/zhaofeng-shu33/hierarchical-community-detection), which runs a small scale experiment and plots the results.
+
 See `reproduce_experiment.py`. You need to run for many hours since we repeat for 20 times and in each time we evaluate at 10 configuration.

@@ -1,4 +1,5 @@
 # run this script file concurrently with 9 threads
+import os
 from GN import GN
 from bhcd import BHCD
 from experiment_two_level import evaluate, InfoClusterWrapper
@@ -55,7 +56,11 @@ class BHCDWrapper(BHCD):
             gamma=bhcd_parameter.gamma, _lambda=bhcd_parameter._lambda, delta=bhcd_parameter.delta)
             
 if __name__ == '__main__':
-    alg_list = ['info-clustering']
+    alg_list = ['info-clustering', 'gn', 'bhcd']
+    if os.environ.get('NUM_TIMES'):
+        runner.NUM_TIMES = int(os.environ['NUM_TIMES'])
+    if os.environ.get('METRIC'):
+        METRIC = os.environ['METRIC']
     reproduce_z_in_1(alg_list, METRIC)
     reproduce_z_in_2(alg_list, METRIC)
-    reproduce_z_o(alg_list, METRIC)    
+    reproduce_z_o(alg_list, METRIC)
