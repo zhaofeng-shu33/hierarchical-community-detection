@@ -56,7 +56,7 @@ ground_truth_tree = Tree(st)
 ground_truth_labels = [[i*16+j for j in range(16)] for i in range(16)]
 # construct
             
-def plot_clustering_tree(tree, alg_name, cutting=0):
+def plot_clustering_tree(tree, alg_name, cutting=0, tree_format='pdf'):
     '''if cutting=True, merge the n nodes at leaf nodes with the same parent.
     '''
     global n,k1
@@ -105,8 +105,9 @@ def plot_clustering_tree(tree, alg_name, cutting=0):
         nstyle['fgcolor'] = color_list[int(_n.macro)]
         nstyle['shape'] = shape_list[int(_n.micro)]
         _n.set_style(nstyle)
-    time_str = datetime.now().strftime('%Y-%m-%d-')    
-    tree_inner.render(os.path.join('build', time_str + 'tree.pdf'.replace('.pdf', '_' + alg_name + '.pdf')), tree_style=ts)
+    time_str = datetime.now().strftime('%Y-%m-%d-')
+    file_name = time_str + 'tree_' + alg_name + '.' + tree_format
+    tree_inner.render(os.path.join('build', file_name), tree_style=ts)
     
 def add_category_info(G, tree):
     for n in tree:
@@ -270,6 +271,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_graph', default=0, type=int, help='whether to save gml file, =0 not save(default), =1 save complete, =2 save without attribute')
     parser.add_argument('--load_graph', help='use gml file to initialize the graph')     
     parser.add_argument('--save_tree', default=0, type=int, nargs='?', const=1, help='whether to save the clustering tree pdf file after clustering, =0 not save, =1 save original, =2 save simplified')     
+    parser.add_argument('--tree_format', default='pdf', choices=['pdf', 'png'])
     parser.add_argument('--alg', default='all', choices=method_chocies, help='which algorithm to run', nargs='+')
     parser.add_argument('--metric', default='norm_rf', choices=['norm_rf', 'dendrogram_purity'], help='which evaluation metric to choose')
     parser.add_argument('--weight', default='triangle-power', help='for info-clustering method, the edge weight shold be used. This parameters'
@@ -328,6 +330,6 @@ if __name__ == '__main__':
             print(args.metric, dis)            
             if(args.save_tree):
                 add_category_info(G, method.tree)
-                plot_clustering_tree(method.tree, alg_name, args.save_tree - 1)
+                plot_clustering_tree(method.tree, alg_name, args.save_tree - 1, args.tree_format)
 else:
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
