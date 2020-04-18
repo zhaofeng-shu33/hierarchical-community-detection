@@ -79,7 +79,7 @@ def plot_ari(filename, plot_title='', pic_format='eps'):
         plt.legend(fontsize='x-large', loc='best', bbox_to_anchor=(1, 0.5))
     else:
         plt.legend(fontsize='x-large')
-    plt.savefig(os.path.join('build', x_title + '.' + pic_format), bbox_inches='tight')
+    plt.savefig(os.path.join('build', x_title + '.' + pic_format), bbox_inches='tight', transparent=True)
     if SHOW_PICTURE:
         plt.show()
 
