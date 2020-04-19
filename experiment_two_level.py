@@ -33,7 +33,7 @@ except ImportError:
 from ete3 import Tree
 try:
     from ete3 import TreeStyle, NodeStyle
-except ImportError:
+except ImportError: # missing PyQt5 module
     pass
 
 from info_cluster import InfoCluster
