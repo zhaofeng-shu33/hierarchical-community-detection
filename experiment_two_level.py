@@ -303,7 +303,7 @@ if __name__ == '__main__':
     if(args.alg.count('all')>0):
         args.alg = method_chocies
     if(args.alg.count('info-clustering')>0):
-        methods.append(InfoClusterWrapper(args.weight_method))
+        methods.append(InfoClusterWrapper(weight_method=args.weight))
     if(args.alg.count('gn')>0):
         methods.append(GN())
     if(args.alg.count('bhcd')>0):
