@@ -250,11 +250,12 @@ def graph_plot(G):
     g.save(directory='build')    
 
 class InfoClusterWrapper(InfoCluster):
-    def __init__(self):
+    def __init__(self, weight_method='triangle-power'):
+        self.weight_method = weight_method
         super().__init__(affinity='precomputed')
-    def fit(self, _G, weight_method='triangle-power'):
+    def fit(self, _G):
         G = _G.copy()
-        if(weight_method=='triangle-power'):            
+        if(self.weight_method == 'triangle-power'):            
             info_clustering_add_weight(G)
         try:
             super().fit(G)
@@ -282,6 +283,7 @@ if __name__ == '__main__':
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode')                  
     parser.add_argument('--evaluate', default=0, type=int, help='whether to evaluate the method instead of run once')
     parser.add_argument('--time', default=False, type=bool, nargs='?', const=True, help='whether to time the algorithm run')
+    parser.add_argument('--weight_method', default='triangle_power', choices=['triangle_power', 'none'])
     args = parser.parse_args()
     method_chocies.pop()
     if(args.debug):
@@ -302,7 +304,7 @@ if __name__ == '__main__':
     if(args.alg.count('all')>0):
         args.alg = method_chocies
     if(args.alg.count('info-clustering')>0):
-        methods.append(InfoClusterWrapper())
+        methods.append(InfoClusterWrapper(args.weight_method))
     if(args.alg.count('gn')>0):
         methods.append(GN())
     if(args.alg.count('bhcd')>0):
