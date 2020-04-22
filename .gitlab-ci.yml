@@ -1,4 +1,6 @@
 job1:
+  only:
+    - full
   tags:
     - self-hosted
   script:
