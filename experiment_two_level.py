@@ -250,12 +250,12 @@ def graph_plot(G):
     g.save(directory='build')    
 
 class InfoClusterWrapper(InfoCluster):
-    def __init__(self, weight_method='triangle-power'):
+    def __init__(self, weight_method='triangle_power'):
         self.weight_method = weight_method
         super().__init__(affinity='precomputed')
     def fit(self, _G):
         G = _G.copy()
-        if(self.weight_method == 'triangle-power'):            
+        if(self.weight_method == 'triangle_power'):
             info_clustering_add_weight(G)
         try:
             super().fit(G)
@@ -275,15 +275,14 @@ if __name__ == '__main__':
     parser.add_argument('--tree_format', default='pdf', choices=['pdf', 'png'])
     parser.add_argument('--alg', default='all', choices=method_chocies, help='which algorithm to run', nargs='+')
     parser.add_argument('--metric', default='norm_rf', choices=['norm_rf', 'dendrogram_purity'], help='which evaluation metric to choose')
-    parser.add_argument('--weight', default='triangle-power', help='for info-clustering method, the edge weight shold be used. This parameters'
-        ' specifies how to modify the edge weight.')    
+    parser.add_argument('--weight', default='triangle_power', help='for info-clustering method, the edge weight shold be used. This parameters'
+        ' specifies how to modify the edge weight.', choices=['triangle_power', 'none'])    
     parser.add_argument('--z_in_1', default=14.0, type=float, help='inter-micro-community node average degree')      
     parser.add_argument('--z_in_2', default=3.0, type=float, help='intra-micro-community node average degree')          
     parser.add_argument('--z_o', default=-1, type=float, help='intra-macro-community node average degree')              
     parser.add_argument('--debug', default=False, type=bool, nargs='?', const=True, help='whether to enter debug mode')                  
     parser.add_argument('--evaluate', default=0, type=int, help='whether to evaluate the method instead of run once')
     parser.add_argument('--time', default=False, type=bool, nargs='?', const=True, help='whether to time the algorithm run')
-    parser.add_argument('--weight_method', default='triangle_power', choices=['triangle_power', 'none'])
     args = parser.parse_args()
     method_chocies.pop()
     if(args.debug):
