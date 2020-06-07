@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.com/zhaofeng-shu33/hierarchical-community-detection.svg?branch=master)](https://travis-ci.com/zhaofeng-shu33/hierarchical-community-detection)
 [![CircleCI](https://circleci.com/gh/zhaofeng-shu33/hierarchical-community-detection.svg?style=svg)](https://circleci.com/gh/zhaofeng-shu33/hierarchical-community-detection)
-[![Gitlab](https://gitlab.com/zhaofeng-shu33/hierarchical-community-detection/badges/master/pipeline.svg)](https://gitlab.com/zhaofeng-shu33/hierarchical-community-detection/pipelines)
 
 # Description
 `experiment_two_level.py` is the main script. It contains many utility functions for computing, data loading and saving, and plotting.
@@ -8,7 +7,7 @@
 `plotter.py` loads plotting point data(output from `runner.py`) and plotting the figure with `matplotlib`.
 
 The following command will produce ideal result occasionally. By ideal result we mean the clustering tree has
-the same topology structure with that of the ground truth. 
+the same topology structure with that of the ground truth.
 ```shell
 python experiment_two_level.py --z_in_2=2.5 --z_o=0.2 --alg=info-clustering
 ```
