@@ -52,9 +52,9 @@ def reproduce_z_o(alg_name_list, metric):
 
 class BHCDWrapper(BHCD):
     def __init__(self):
-        super().__init__(restart=bhcd_parameter.restart, 
+        super().__init__(restart=bhcd_parameter.restart,
             gamma=bhcd_parameter.gamma, _lambda=bhcd_parameter._lambda, delta=bhcd_parameter.delta)
-            
+
 if __name__ == '__main__':
     alg_list = ['info-clustering', 'gn', 'bhcd']
     if os.environ.get('NUM_TIMES'):

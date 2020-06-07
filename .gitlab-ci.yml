@@ -6,7 +6,7 @@ job1:
   script:
     - mkdir build
     - python3 -m pip install --user -r requirements.txt
-    - NUM_TIMES=20 METRIC=norm_rf python3 reproduce_experiment.py
+    - NUM_TIMES=20 METRIC=dendrogram_purity python3 reproduce_experiment.py
     - python3 -m pip install --user matplotlib
     - python3 plotter.py --format svg --filename z_in_1
     - python3 plotter.py --format svg --filename z_in_2
