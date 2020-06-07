@@ -42,7 +42,7 @@ from bhcd import BHCD
 
 import bhcd_parameter
 from dendrogram_purity import dendrogram_purity
-
+from ete_robinson_foulds import robinson_foulds
 
 n = 16
 k1 = 4 # inner
@@ -118,7 +118,7 @@ def add_category_info(G, tree):
 def evaluate_single(alg, G, metric):
     alg.fit(G)
     if(metric == 'norm_rf'):    
-        res = alg.tree.compare(ground_truth_tree, unrooted=True)
+        res = robinson_foulds(alg.tree, ground_truth_tree)
         metric_score = res['norm_rf']
     elif(metric == 'dendrogram_purity'):
         metric_score = dendrogram_purity(alg.tree, ground_truth_labels)
@@ -144,7 +144,7 @@ def evaluate(num_times, alg, z_in_1, z_in_2, z_o, metric):
     for i in range(num_times):
         G = construct(z_in_1, z_in_2, z_o)
         norm_rf = evaluate_single(alg, G, metric)
-        logging.info('round {0}: with norm_rf={1}'.format(i, norm_rf))
+        logging.info('round {0}: with {2}={1}'.format(i, norm_rf, metric))
         report['norm_rf'] += norm_rf
     report['norm_rf'] /= num_times
     report.update({
