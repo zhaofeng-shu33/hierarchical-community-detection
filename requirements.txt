@@ -10,3 +10,4 @@ six
 scipy
 GN
 pybhcd
+ete-robinson-foulds
