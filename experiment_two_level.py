@@ -144,7 +144,7 @@ def evaluate(num_times, alg, z_in_1, z_in_2, z_o, metric):
     for i in range(num_times):
         G = construct(z_in_1, z_in_2, z_o)
         norm_rf = evaluate_single(alg, G, metric)
-        logging.info('round {0}: with norm_rf={1}'.format(i, norm_rf))
+        logging.info('round {0}: with {2}={1}'.format(i, norm_rf, metric))
         report['norm_rf'] += norm_rf
     report['norm_rf'] /= num_times
     report.update({
