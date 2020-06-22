@@ -35,13 +35,13 @@ def plot_ari(filename, plot_title='', pic_format='eps'):
         x_title = 'z_o'
         
     if(filename.find('info-clustering')>0):
-        alg = 'info-clustering'
-        other_alg = 'gn'
-        other_alg_2 = 'bhcd'
+        alg = 'GBIC'
+        other_alg = 'GN'
+        other_alg_2 = 'BHCD'
     elif(filename.find('gn')>0):
-        alg = 'gn'
-        other_alg = 'info-clustering'
-        other_alg_2 = 'bhcd'
+        alg = 'GBIC'
+        other_alg = 'GN'
+        other_alg_2 = 'BHCD'
     else:
         raise ValueError('finename must contain info-clustering or gn')
     x_data = [i[x_title] for i in data]
