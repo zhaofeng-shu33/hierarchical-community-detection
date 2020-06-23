@@ -39,8 +39,8 @@ def plot_ari(filename, plot_title='', pic_format='eps'):
         other_alg = 'GN'
         other_alg_2 = 'BHCD'
     elif(filename.find('gn')>0):
-        alg = 'GBIC'
-        other_alg = 'GN'
+        alg = 'GN'
+        other_alg = 'GBIC'
         other_alg_2 = 'BHCD'
     else:
         raise ValueError('finename must contain info-clustering or gn')
