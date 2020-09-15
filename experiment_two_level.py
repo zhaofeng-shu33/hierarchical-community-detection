@@ -231,8 +231,8 @@ def graph_plot(G):
         g.node(str(i[0]), shape='point', color=color_list[macro_index])
     for e in nx.edges(G):
         i,j = e
-        i_attr = G.node[i]
-        j_attr = G.node[j]
+        i_attr = G.nodes[i]
+        j_attr = G.nodes[j]
         if(i_attr['macro'] != j_attr['macro']):
             edge_len = 2
             weight_value = 0.1
@@ -247,7 +247,7 @@ def graph_plot(G):
             macro_index = i_attr['macro']
             edge_color = color_list[macro_index]
         g.edge(str(i), str(j), weight=str(weight_value), penwidth="0.3", len=str(edge_len), color=edge_color, style='dotted')
-    g.save(directory='build')    
+    g.save(directory='build')
 
 class InfoClusterWrapper(InfoCluster):
     def __init__(self, weight_method='triangle_power'):
