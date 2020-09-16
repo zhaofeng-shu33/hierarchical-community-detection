@@ -111,4 +111,4 @@ if __name__ == '__main__':
     else:
         file_name = args.filename
     SHOW_PICTURE = args.show_pic
-    plot_ari(file_name, '', args.format)
+    plot_ari(file_name, args.format)
