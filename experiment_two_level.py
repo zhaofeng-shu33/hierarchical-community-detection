@@ -42,7 +42,7 @@ from bhcd import BHCD
 
 import bhcd_parameter
 from dendrogram_purity import dendrogram_purity
-
+from ete_robinson_foulds import robinson_foulds
 
 n = 16
 k1 = 4 # inner
@@ -118,7 +118,7 @@ def add_category_info(G, tree):
 def evaluate_single(alg, G, metric):
     alg.fit(G)
     if(metric == 'norm_rf'):    
-        res = alg.tree.compare(ground_truth_tree, unrooted=True)
+        res = robinson_foulds(alg.tree, ground_truth_tree)
         metric_score = res['norm_rf']
     elif(metric == 'dendrogram_purity'):
         metric_score = dendrogram_purity(alg.tree, ground_truth_labels)
@@ -144,7 +144,7 @@ def evaluate(num_times, alg, z_in_1, z_in_2, z_o, metric):
     for i in range(num_times):
         G = construct(z_in_1, z_in_2, z_o)
         norm_rf = evaluate_single(alg, G, metric)
-        logging.info('round {0}: with norm_rf={1}'.format(i, norm_rf))
+        logging.info('round {0}: with {2}={1}'.format(i, norm_rf, metric))
         report['norm_rf'] += norm_rf
     report['norm_rf'] /= num_times
     report.update({
@@ -231,8 +231,8 @@ def graph_plot(G):
         g.node(str(i[0]), shape='point', color=color_list[macro_index])
     for e in nx.edges(G):
         i,j = e
-        i_attr = G.node[i]
-        j_attr = G.node[j]
+        i_attr = G.nodes[i]
+        j_attr = G.nodes[j]
         if(i_attr['macro'] != j_attr['macro']):
             edge_len = 2
             weight_value = 0.1
@@ -247,14 +247,15 @@ def graph_plot(G):
             macro_index = i_attr['macro']
             edge_color = color_list[macro_index]
         g.edge(str(i), str(j), weight=str(weight_value), penwidth="0.3", len=str(edge_len), color=edge_color, style='dotted')
-    g.save(directory='build')    
+    g.save(directory='build')
 
 class InfoClusterWrapper(InfoCluster):
-    def __init__(self):
+    def __init__(self, weight_method='triangle_power'):
+        self.weight_method = weight_method
         super().__init__(affinity='precomputed')
-    def fit(self, _G, weight_method='triangle-power'):
+    def fit(self, _G):
         G = _G.copy()
-        if(weight_method=='triangle-power'):            
+        if(self.weight_method == 'triangle_power'):
             info_clustering_add_weight(G)
         try:
             super().fit(G)
@@ -274,8 +275,8 @@ if __name__ == '__main__':
     parser.add_argument('--tree_format', default='pdf', choices=['pdf', 'png'])
     parser.add_argument('--alg', default='all', choices=method_chocies, help='which algorithm to run', nargs='+')
     parser.add_argument('--metric', default='norm_rf', choices=['norm_rf', 'dendrogram_purity'], help='which evaluation metric to choose')
-    parser.add_argument('--weight', default='triangle-power', help='for info-clustering method, the edge weight shold be used. This parameters'
-        ' specifies how to modify the edge weight.')    
+    parser.add_argument('--weight', default='triangle_power', help='for info-clustering method, the edge weight shold be used. This parameters'
+        ' specifies how to modify the edge weight.', choices=['triangle_power', 'none'])    
     parser.add_argument('--z_in_1', default=14.0, type=float, help='inter-micro-community node average degree')      
     parser.add_argument('--z_in_2', default=3.0, type=float, help='intra-micro-community node average degree')          
     parser.add_argument('--z_o', default=-1, type=float, help='intra-macro-community node average degree')              
@@ -302,7 +303,7 @@ if __name__ == '__main__':
     if(args.alg.count('all')>0):
         args.alg = method_chocies
     if(args.alg.count('info-clustering')>0):
-        methods.append(InfoClusterWrapper())
+        methods.append(InfoClusterWrapper(weight_method=args.weight))
     if(args.alg.count('gn')>0):
         methods.append(GN())
     if(args.alg.count('bhcd')>0):
