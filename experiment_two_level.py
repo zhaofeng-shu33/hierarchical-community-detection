@@ -1,5 +1,5 @@
 '''
-In this experiment, we prepare a graph with two level hierachical structures.
+In this experiment, we prepare a graph with two level hierarchical structures.
 The graph has k2 macro-communities and in each macro-community there are k1 micro-communities. Each micro-community
 contains n nodes. There are also two parameters p1 and p2 which control the inter-community linkage respectively.
 Ideally, when p2=0, the graph has k2 connected components and when p2=1, the graph is random at macro-community level.
@@ -9,10 +9,10 @@ By using info-clustering algorithm we try to recover the original graph with
 partition_num_list = [1, k2, k2*k1, n*k2*k1] under certain conditions of p1 and p2.
 
 We also use other clustering algorithm which does not require predetermined cluster number. 
-For example, Girvan-Newman algorithm and Affinity Propogation. There algorithms can get the macro-community first
+For example, Girvan-Newman algorithm and Affinity Propagation. There algorithms can get the macro-community first
 and we rerun the algorithm to get the micro-community structures.
 
-As we can see, if the graph has deep hierachical structure, info-cluster has advantages since we only need to run ic algorithm once.
+As we can see, if the graph has deep hierarchical structure, info-cluster has advantages since we only need to run ic algorithm once.
 '''
 import random
 import argparse
