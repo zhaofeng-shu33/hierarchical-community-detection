@@ -272,7 +272,7 @@ if __name__ == '__main__':
     parser.add_argument('--save_graph', default=0, type=int, help='whether to save gml file, =0 not save(default), =1 save complete, =2 save without attribute')
     parser.add_argument('--load_graph', help='use gml file to initialize the graph')     
     parser.add_argument('--save_tree', default=0, type=int, nargs='?', const=1, help='whether to save the clustering tree pdf file after clustering, =0 not save, =1 save original, =2 save simplified')     
-    parser.add_argument('--tree_format', default='pdf', choices=['pdf', 'png'])
+    parser.add_argument('--tree_format', default='pdf', choices=['pdf', 'png', 'svg'])
     parser.add_argument('--alg', default='all', choices=method_chocies, help='which algorithm to run', nargs='+')
     parser.add_argument('--metric', default='norm_rf', choices=['norm_rf', 'dendrogram_purity'], help='which evaluation metric to choose')
     parser.add_argument('--weight', default='triangle_power', help='for info-clustering method, the edge weight shold be used. This parameters'
