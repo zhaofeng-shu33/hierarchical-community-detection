@@ -22,7 +22,7 @@ def load_other_data(filename, alg, other_alg):
     data = pickle.load(f)
     return [i['norm_rf'] for i in data]
 
-def plot_ari(filename, pic_format='eps'):
+def plot_ari(filename, pic_format='pdf'):
     '''combine different algorithms
     '''
     f = open(os.path.join('build', filename), 'rb')
@@ -33,7 +33,7 @@ def plot_ari(filename, pic_format='eps'):
         x_title = 'z_in_2'
     else:
         x_title = 'z_o'
-    alg_trans_dic = {'info-clustering': 'GBIC', 'gn': 'GN', 'bhcd': 'BHCD'}
+    alg_trans_dic = {'info-clustering': 'HPSP', 'gn': '格文-纽曼算法', 'bhcd': '贝叶斯层次发现'}
     if filename.find('info-clustering') > 0:
         alg = 'info-clustering'
         other_alg = 'gn'
@@ -47,11 +47,11 @@ def plot_ari(filename, pic_format='eps'):
     x_data = [i[x_title] for i in data]
     distance_data = [i['norm_rf'] for i in data]
     plt.plot(x_data, distance_data, label=alg_trans_dic[alg],
-             linewidth=3, color='red', marker='o', markersize=12)
+             linewidth=3, color='green', marker='o', markersize=12)
     data_2 = load_other_data(filename, alg, other_alg)
     if data_2:
         plt.plot(x_data, data_2, label=alg_trans_dic[other_alg],
-                 linewidth=3, color='green', marker='+', markersize=12)
+                 linewidth=3, color='red', marker='+', markersize=12)
     data_3 = load_other_data(filename, alg, other_alg_2)
     if data_3:
         plt.plot(x_data, data_3, label=alg_trans_dic[other_alg_2],
@@ -60,8 +60,8 @@ def plot_ari(filename, pic_format='eps'):
     if filename.find('dendrogram_purity') > 0:
         y_label_name = 'dendrogram purity'
     else:
-        y_label_name = 'distance'
-    plt.ylabel(y_label_name, fontsize=18)
+        y_label_name = '距\n离'
+    plt.ylabel(y_label_name, fontsize=18, rotation=0, fontname='SimSun', labelpad=10)
     if x_title == 'z_o':
         title_str = '$z_{in_1}$ = %.1f, $z_{in_2}$ = %.1f' % (data[0]['z_in_1'], data[0]['z_in_2'])
     elif x_title == 'z_in_1':
@@ -79,9 +79,12 @@ def plot_ari(filename, pic_format='eps'):
 
     plt.title(title_str, fontsize=18)
     if x_title == 'z_o':
-        plt.legend(fontsize='x-large', loc='best', bbox_to_anchor=(1, 0.5))
+        L = plt.legend(fontsize='x-large', loc='best', bbox_to_anchor=(1, 0.5))
     else:
-        plt.legend(fontsize='x-large')
+        L = plt.legend(fontsize='x-large')
+    plt.setp(L.texts, fontname='SimSun')
+    L.get_frame().set_alpha(None)
+    L.get_frame().set_facecolor((1, 1, 1, 0))
     plt.savefig(os.path.join('build', x_title + '.' + pic_format),
                 bbox_inches='tight', transparent=True)
     if SHOW_PICTURE:
@@ -98,7 +101,7 @@ if __name__ == '__main__':
                         help='whether to show the picture interactively')
     parser.add_argument('--debug', default=False, type=bool,
                         nargs='?', const=True, help='whether to enter debug mode')
-    parser.add_argument('--format', default='eps', choices=['eps', 'svg'])
+    parser.add_argument('--format', default='pdf', choices=['pdf', 'svg'])
     args = parser.parse_args()
     if args.debug:
         pdb.set_trace()
