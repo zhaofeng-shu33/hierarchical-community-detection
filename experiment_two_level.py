@@ -48,7 +48,7 @@ n = 16
 k1 = 4 # inner
 k2 = 4 # outer
 K = 18
-color_list = ['red', 'orange', 'green', 'purple']
+color_list = ['red', 'orange', 'green4', 'purple']
 shape_list = ['sphere', 'circle', 'sphere', 'sphere']
 
 st = open('ground_truth.txt').read()
